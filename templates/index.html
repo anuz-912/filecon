@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileCon - Magic Image Converter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Home Button CSS -->
+    <style>
+        .home-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            transition: all 0.4s ease;
+            z-index: 1000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            animation: pulse-gentle 2s infinite;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.5);
+            border-color: rgba(255, 255, 255, 0.4);
+            animation: none;
+        }
+
+        .home-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .home-btn i {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .home-btn:hover i {
+            transform: scale(1.2);
+        }
+
+        @keyframes pulse-gentle {
+            0%, 100% { box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5); }
+        }
+
+        @media (max-width: 640px) {
+            .home-btn {
+                top: 15px;
+                right: 15px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+            
+            .home-btn span {
+                display: none;
+            }
+            
+            .home-btn {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                justify-content: center;
+            }
+            
+            .home-btn i {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- Home Button -->
+    <a href="https://anujpanthi.com.np" class="home-btn" target="_blank" title="Visit My Portfolio">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div class="magic-wand">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h1>FileCon Magic</h1>
+                <p class="tagline">Transform your images in seconds</p>
+            </div>
+
+            {% if error %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data" class="converter-form" id="converterForm">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drop your image here</h3>
+                    <p>or click to browse</p>
+                    <input type="file" name="file" id="fileInput" accept="image/*" required>
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+
+                <div class="format-selector">
+                    <label for="formatSelect">
+                        <i class="fas fa-cog"></i>
+                        Convert to format:
+                    </label>
+                    <select name="format" id="formatSelect" class="format-dropdown">
+                        <option value="PNG">PNG (Portable Network Graphics)</option>
+                        <option value="JPG">JPG (JPEG Image)</option>
+                        <option value="WEBP">WEBP (Modern Web Format)</option>
+                        <option value="JPEG">JPEG (Joint Photographic Experts)</option>
+                        <option value="BMP">BMP (Bitmap Image)</option>
+                        <option value="GIF">GIF (Graphics Interchange)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="convert-btn" id="convertBtn">
+                    <span class="btn-text">Convert Image</span>
+                    <span class="btn-loader">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                    <i class="fas fa-bolt btn-icon"></i>
+                </button>
+            </form>
+
+            <div class="security-note">
+                <div class="security-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <h4>Your Privacy & Security</h4>
+                </div>
+                <div class="security-features">
+                    <div class="feature">
+                        <i class="fas fa-lock"></i>
+                        <span>Files never stored on our servers</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>Instant deletion after conversion</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-eye-slash"></i>
+                        <span>No one sees your files but you</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-cloud"></i>
+                        <span>Secure encrypted processing</span>
+                    </div>
+                </div>
+                <p class="disclaimer">
+                    We take your privacy seriously. Your uploaded images are converted in real-time and immediately deleted from our system. No copies are kept, and your files remain completely confidential throughout the process.
+                </p>
+            </div>
+
+            <div class="footer">
+                <div class="limits">
+                    <i class="fas fa-info-circle"></i>
+                    Max file size: 10MB • Supported: JPG, PNG, WEBP, GIF, BMP, JPEG
+                </div>
+                <div class="credits">
+                    Made with <i class="fas fa-heart"></i> by <a href="https://anujpanthi.com.np" style="color: rgb(41, 123, 141); text-decoration: underline;">
+    Anuj Panthi
+</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
